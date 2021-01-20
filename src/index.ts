@@ -28,27 +28,59 @@
 
 import { JsonValue, JsonArray, JsonObject, Merge } from 'type-fest';
 
-export interface MergeOptions {
-	concatArrays:   boolean,
+enum ArrayMergeStrategies {
+	Replace     = 'replace',
+	Concatenate = 'concat',
+	MergeItems  = 'merge',
+}
+
+interface MergeOptions {
+	arrays:         ArrayMergeStrategies,
 	onlyCommonKeys: boolean,
 	excludedKeys:   Array<string>,
 	allowedKeys?:   Array<string>,
 	keysFilter:     (key: string, baseValue: JsonValue, mixedValue?: JsonValue) => boolean,
 }
 
-type MergeResult<B extends JsonValue, M extends JsonValue> = [B] extends JsonObject ? [M] extends JsonObject ? Merge<B, M> : M : M;
+type MergeResult<B extends JsonValue, M extends JsonValue> = [B] extends JsonObject ? M extends JsonObject ? Merge<B, M> : M : M;
 
 export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, userOptions: Partial<MergeOptions> = {}): MergeResult<B, M> {
 	const options: MergeOptions = {
-		concatArrays:   false,
+		arrays:         ArrayMergeStrategies.Replace,
 		onlyCommonKeys: false,
 		excludedKeys:   [],
 		keysFilter:     () => true,
 		...userOptions,
 	};
 
-	if (isJsonArray(base) && isJsonArray(mixed) && options.concatArrays) {
-		return base.concat(mixed) as B & M;
+	if (isJsonArray(base) && isJsonArray(mixed)) {
+		const result: JsonArray = [];
+		switch (options.arrays) {
+			case ArrayMergeStrategies.Replace:
+				return mixed;
+
+			case ArrayMergeStrategies.Concatenate:
+				return base.concat(mixed) as JsonArray & B & M;
+
+			case ArrayMergeStrategies.MergeItems:
+				for (const index of [...new Array(Math.max(base.length, mixed.length)).keys()]) {
+					const baseItem  = base[index];
+					const mixedItem = mixed[index];
+
+					if (baseItem !== undefined && mixedItem !== undefined) {
+						result.push(merge(baseItem, mixedItem));
+						continue;
+					}
+					if (baseItem !== undefined) {
+						result.push(baseItem);
+						continue;
+					}
+					if (mixedItem !== undefined) {
+						result.push(mixedItem);
+					}
+				}
+				return result as JsonArray & B & M;
+		}
 	}
 
 	if (!isJsonObject(base) || !isJsonObject(mixed)) {
