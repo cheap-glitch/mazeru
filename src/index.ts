@@ -9,7 +9,7 @@
  * :::######:::#:::##:::#::::::::#::::::#:::##:::#::::::::#
  * ...@@@@@@...@...@@...@........@......@...@@...@@......@@
  *
- * A configurable deep merging utility for JSON objects.
+ * A flexible deep merging utility for JSON objects.
  *
  * Copyright (c) 2021-present, cheap glitch
  *

@@ -1,6 +1,6 @@
 {
   "name": "mazeru",
-  "description": "@TODO.",
+  "description": "A flexible deep merging utility for JSON objects.",
   "version": "0.1.0",
   "license": "ISC",
   "repository": {
