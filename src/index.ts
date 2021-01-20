@@ -52,6 +52,10 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 
 	const result: JsonObject = {};
 	for (const [key, baseValue] of Object.entries(base)) {
+		if (baseValue === undefined) {
+			continue;
+		}
+
 		const mixedValue = mixed[key];
 		if (mixedValue === undefined) {
 			if (!options.onlyCommonKeys) {
