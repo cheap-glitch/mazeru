@@ -40,7 +40,7 @@ interface MergeOptions {
 	onlyCommonKeys: boolean,
 	excludedKeys:   Array<string>,
 	allowedKeys?:   Array<string>,
-	keysFilter:     (key: string, baseValue: JsonValue, mixedValue?: JsonValue) => boolean,
+	keysFilter:     (key: string, baseValue?: JsonValue, mixedValue?: JsonValue) => boolean,
 }
 
 type MergeResult<B extends JsonValue, M extends JsonValue> = [B] extends JsonObject ? M extends JsonObject ? Merge<B, M> : M : M;
@@ -70,7 +70,7 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 					const mixedItem = mixed[index];
 
 					if (baseItem !== undefined && mixedItem !== undefined) {
-						result.push(merge(baseItem, mixedItem));
+						result.push(merge(baseItem, mixedItem, userOptions));
 						continue;
 					}
 					if (baseItem !== undefined) {
@@ -90,13 +90,13 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 	}
 
 	const result: JsonObject = {};
-	for (const [key, baseValue] of Object.entries(base)) {
-		if (baseValue === undefined) {
-			continue;
-		}
-
+	for (const key of new Set([...Object.keys(base), ...Object.keys(mixed)])) {
+		const baseValue  = base[key];
 		const mixedValue = mixed[key];
 
+		if (options.onlyCommonKeys && (baseValue === undefined || mixedValue === undefined)) {
+			continue;
+		}
 		if (options.excludedKeys.includes(key) || (options.allowedKeys !== undefined && !options.allowedKeys.includes(key))) {
 			continue;
 		}
@@ -104,14 +104,17 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 			continue;
 		}
 
-		if (mixedValue === undefined) {
-			if (!options.onlyCommonKeys) {
-				result[key] = baseValue;
-			}
+		if (baseValue !== undefined && mixedValue !== undefined) {
+			result[key] = merge(baseValue, mixedValue, userOptions);
 			continue;
 		}
-
-		result[key] = merge(baseValue, mixedValue, options);
+		if (baseValue !== undefined) {
+			result[key] = baseValue;
+			continue;
+		}
+		if (mixedValue !== undefined) {
+			result[key] = mixedValue;
+		}
 	}
 
 	return result as Merge<B, M>;
