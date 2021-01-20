@@ -28,14 +28,14 @@
 
 import { JsonValue, JsonArray, JsonObject, Merge } from 'type-fest';
 
-enum ArrayMergeStrategies {
+export enum MergingStrategy {
 	Replace     = 'replace',
 	Concatenate = 'concat',
 	MergeItems  = 'merge',
 }
 
 interface MergeOptions {
-	arrays:         ArrayMergeStrategies,
+	arrays:         MergingStrategy,
 	onlyCommonKeys: boolean,
 	excludedKeys:   Array<string>,
 	allowedKeys?:   Array<string>,
@@ -46,7 +46,7 @@ type MergeResult<B extends JsonValue, M extends JsonValue> = [B] extends JsonObj
 
 export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, userOptions: Partial<MergeOptions> = {}): MergeResult<B, M> {
 	const options: MergeOptions = {
-		arrays:         ArrayMergeStrategies.Replace,
+		arrays:         MergingStrategy.Replace,
 		onlyCommonKeys: false,
 		excludedKeys:   [],
 		keysFilter:     () => true,
@@ -56,13 +56,14 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 	if (isJsonArray(base) && isJsonArray(mixed)) {
 		const result: JsonArray = [];
 		switch (options.arrays) {
-			case ArrayMergeStrategies.Replace:
+			case MergingStrategy.Replace:
 				return mixed;
 
-			case ArrayMergeStrategies.Concatenate:
+			case MergingStrategy.Append:
+			case MergingStrategy.Concatenate:
 				return base.concat(mixed) as JsonArray & B & M;
 
-			case ArrayMergeStrategies.MergeItems:
+			case MergingStrategy.MergeItems:
 				for (const index of [...new Array(Math.max(base.length, mixed.length)).keys()]) {
 					const baseItem  = base[index];
 					const mixedItem = mixed[index];
