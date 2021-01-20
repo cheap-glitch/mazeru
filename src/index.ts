@@ -30,6 +30,7 @@ import { JsonValue, JsonArray, JsonObject, Merge } from 'type-fest';
 
 export enum MergingStrategy {
 	Replace     = 'replace',
+	Append      = 'append',
 	Concatenate = 'concat',
 	MergeItems  = 'merge',
 }
