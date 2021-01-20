@@ -31,15 +31,20 @@ import { JsonValue, JsonArray, JsonObject, Merge } from 'type-fest';
 export interface MergeOptions {
 	concatArrays:   boolean,
 	onlyCommonKeys: boolean,
+	excludedKeys:   Array<string>,
+	allowedKeys?:   Array<string>,
+	keysFilter:     (key: string, baseValue: JsonValue, mixedValue?: JsonValue) => boolean,
 }
 
 type MergeResult<B extends JsonValue, M extends JsonValue> = [B] extends JsonObject ? [M] extends JsonObject ? Merge<B, M> : M : M;
 
-export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, options: Partial<MergeOptions> = {}): MergeResult<B, M> {
-	options = {
+export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, userOptions: Partial<MergeOptions> = {}): MergeResult<B, M> {
+	const options: MergeOptions = {
 		concatArrays:   false,
 		onlyCommonKeys: false,
-		...options,
+		excludedKeys:   [],
+		keysFilter:     () => true,
+		...userOptions,
 	};
 
 	if (isJsonArray(base) && isJsonArray(mixed) && options.concatArrays) {
@@ -57,6 +62,14 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 		}
 
 		const mixedValue = mixed[key];
+
+		if (options.excludedKeys.includes(key) || (options.allowedKeys !== undefined && !options.allowedKeys.includes(key))) {
+			continue;
+		}
+		if (!options.keysFilter(key, baseValue, mixedValue)) {
+			continue;
+		}
+
 		if (mixedValue === undefined) {
 			if (!options.onlyCommonKeys) {
 				result[key] = baseValue;
