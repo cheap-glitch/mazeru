@@ -32,7 +32,13 @@
     "extends": "@cheap-glitch/typescript",
     "env": {
       "es6": true
-    }
+    },
+    "overrides": [
+      {
+        "files": ["./test/index.test.ts"],
+        "rules": { "unicorn/no-null": "off" }
+      }
+    ]
   },
   "jest": {
     "preset": "ts-jest",
