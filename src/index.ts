@@ -35,7 +35,7 @@ export interface MergeOptions {
 
 type MergeResult<B extends JsonValue, M extends JsonValue> = [B] extends JsonObject ? [M] extends JsonObject ? Merge<B, M> : M : M;
 
-export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, options: Partial<MergeOptions>): MergeResult<B, M> {
+export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, options: Partial<MergeOptions> = {}): MergeResult<B, M> {
 	options = {
 		concatArrays:   false,
 		onlyCommonKeys: false,
