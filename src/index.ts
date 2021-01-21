@@ -9,7 +9,7 @@
  * :::######:::#:::##:::#::::::::#::::::#:::##:::#::::::::#
  * ...@@@@@@...@...@@...@........@......@...@@...@@......@@
  *
- * A flexible deep merging utility for JSON objects.
+ * A flexible deep merging utility for JSON-like objects.
  *
  * Copyright (c) 2021-present, cheap glitch
  *
@@ -45,7 +45,7 @@ interface MergeOptions {
 
 type MergeResult<B extends JsonValue, M extends JsonValue> = [B] extends JsonObject ? M extends JsonObject ? Merge<B, M> : M : M;
 
-export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, userOptions: Partial<MergeOptions> = {}): MergeResult<B, M> {
+export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: M, userOptions: Partial<MergeOptions> = {}, visitedObjects: Array<JsonObject> = []): MergeResult<B, M> {
 	const options: MergeOptions = {
 		arrays:         MergingStrategy.Replace,
 		onlyCommonKeys: false,
@@ -70,7 +70,7 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 					const mixedItem = mixed[index];
 
 					if (baseItem !== undefined && mixedItem !== undefined) {
-						result.push(merge(baseItem, mixedItem, userOptions));
+						result.push(merge(baseItem, mixedItem, userOptions, visitedObjects));
 						continue;
 					}
 					if (baseItem !== undefined) {
@@ -90,9 +90,11 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 	}
 
 	const result: JsonObject = {};
+	const safeReferences: Array<JsonObject> = [];
+
 	for (const key of new Set([...Object.keys(base), ...Object.keys(mixed)])) {
-		const baseValue  = base[key];
-		const mixedValue = mixed[key];
+		const baseValue  = isCircularReference(base[key],  visitedObjects, safeReferences) ? undefined :  base[key];
+		const mixedValue = isCircularReference(mixed[key], visitedObjects, safeReferences) ? undefined : mixed[key];
 
 		if (options.onlyCommonKeys && (baseValue === undefined || mixedValue === undefined)) {
 			continue;
@@ -105,19 +107,37 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 		}
 
 		if (baseValue !== undefined && mixedValue !== undefined) {
-			result[key] = merge(baseValue, mixedValue, userOptions);
+			result[key] = merge(baseValue, mixedValue, userOptions, visitedObjects);
 			continue;
 		}
 		if (baseValue !== undefined) {
-			result[key] = isJsonObject(baseValue) ? merge(baseValue, {}, userOptions) : baseValue;
+			result[key] = isJsonObject(baseValue) ? merge(baseValue, {}, userOptions, visitedObjects) : baseValue;
 			continue;
 		}
 		if (mixedValue !== undefined) {
-			result[key] = isJsonObject(mixedValue) ? merge({}, mixedValue, userOptions) : mixedValue;
+			result[key] = isJsonObject(mixedValue) ? merge({}, mixedValue, userOptions, visitedObjects) : mixedValue;
 		}
 	}
 
 	return result as Merge<B, M>;
+}
+
+function isCircularReference(value: JsonValue | undefined, visitedObjects: Array<JsonObject>, safeReferences: Array<JsonObject>): boolean {
+	if (value === undefined || !isJsonObject(value)) {
+		return false;
+	}
+
+	if (safeReferences.includes(value)) {
+		return false;
+	}
+	if (visitedObjects.includes(value)) {
+		return true;
+	}
+
+	visitedObjects.push(value);
+	safeReferences.push(value);
+
+	return false;
 }
 
 function isJsonArray(value: JsonValue): value is JsonArray {
