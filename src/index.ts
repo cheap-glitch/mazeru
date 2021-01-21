@@ -109,11 +109,11 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 			continue;
 		}
 		if (baseValue !== undefined) {
-			result[key] = baseValue;
+			result[key] = isJsonObject(baseValue) ? merge(baseValue, {}, userOptions) : baseValue;
 			continue;
 		}
 		if (mixedValue !== undefined) {
-			result[key] = mixedValue;
+			result[key] = isJsonObject(mixedValue) ? merge({}, mixedValue, userOptions) : mixedValue;
 		}
 	}
 
