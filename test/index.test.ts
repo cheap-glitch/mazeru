@@ -105,17 +105,17 @@ test('filtering keys', () => { // {{{
 	expect(merge({ foo: { bar: true } }, { bar: { foo: true } }, { onlyCommonKeys: true })).toEqual({});
 	expect(merge({ foo: true, bar: false }, { bar: true },       { onlyCommonKeys: true })).toEqual({ bar: true });
 
-	expect(merge({ foo: true }, { bar: true },                   { excludedKeys: ['foo', 'bar'] })).toEqual({});
-	expect(merge({ foo: true }, { bar: true },                   { excludedKeys: ['foo'] })).toEqual({ bar: true });
-	expect(merge({ foo: true }, { bar: true },                   { excludedKeys: ['bar'] })).toEqual({ foo: true });
-	expect(merge({ foo: { bar: true } }, { bar: true },          { excludedKeys: ['foo'] })).toEqual({ bar: true });
-	expect(merge({ foo: { bar: true } }, { bar: true },          { excludedKeys: ['bar'] })).toEqual({ foo: {} });
+	expect(merge({ foo: true }, { bar: true },                   { excludeKeys: ['foo', 'bar'] })).toEqual({});
+	expect(merge({ foo: true }, { bar: true },                   { excludeKeys: ['foo'] })).toEqual({ bar: true });
+	expect(merge({ foo: true }, { bar: true },                   { excludeKeys: ['bar'] })).toEqual({ foo: true });
+	expect(merge({ foo: { bar: true } }, { bar: true },          { excludeKeys: ['foo'] })).toEqual({ bar: true });
+	expect(merge({ foo: { bar: true } }, { bar: true },          { excludeKeys: ['bar'] })).toEqual({ foo: {} });
 
-	expect(merge({ foo: true }, { bar: true },                   { allowedKeys: [] })).toEqual({});
-	expect(merge({ foo: true }, { bar: true },                   { allowedKeys: ['foo', 'bar'] })).toEqual({ foo: true, bar: true });
-	expect(merge({ foo: true }, { bar: true },                   { allowedKeys: ['foo'] })).toEqual({ foo: true });
-	expect(merge({ foo: true }, { bar: true },                   { allowedKeys: ['bar'] })).toEqual({ bar: true });
-	expect(merge({ foo: { bar: true } }, { bar: true },          { allowedKeys: ['foo'] })).toEqual({ foo: {} });
-	expect(merge({ foo: { bar: true } }, { bar: true },          { allowedKeys: ['bar'] })).toEqual({ bar: true });
+	expect(merge({ foo: true }, { bar: true },                   { allowKeys: [] })).toEqual({});
+	expect(merge({ foo: true }, { bar: true },                   { allowKeys: ['foo', 'bar'] })).toEqual({ foo: true, bar: true });
+	expect(merge({ foo: true }, { bar: true },                   { allowKeys: ['foo'] })).toEqual({ foo: true });
+	expect(merge({ foo: true }, { bar: true },                   { allowKeys: ['bar'] })).toEqual({ bar: true });
+	expect(merge({ foo: { bar: true } }, { bar: true },          { allowKeys: ['foo'] })).toEqual({ foo: {} });
+	expect(merge({ foo: { bar: true } }, { bar: true },          { allowKeys: ['bar'] })).toEqual({ bar: true });
 
 }); // }}}

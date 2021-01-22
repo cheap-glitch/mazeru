@@ -38,8 +38,8 @@ export enum MergingStrategy {
 interface MergeOptions {
 	arrays:         MergingStrategy,
 	onlyCommonKeys: boolean,
-	excludedKeys:   Array<string>,
-	allowedKeys?:   Array<string>,
+	excludeKeys:    Array<string>,
+	allowKeys?:     Array<string>,
 	keysFilter:     (key: string, baseValue?: JsonValue, mixedValue?: JsonValue) => boolean,
 }
 
@@ -49,7 +49,7 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 	const options: MergeOptions = {
 		arrays:         MergingStrategy.Replace,
 		onlyCommonKeys: false,
-		excludedKeys:   [],
+		excludeKeys:   [],
 		keysFilter:     () => true,
 		...userOptions,
 	};
@@ -99,7 +99,7 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 		if (options.onlyCommonKeys && (baseValue === undefined || mixedValue === undefined)) {
 			continue;
 		}
-		if (options.excludedKeys.includes(key) || (options.allowedKeys !== undefined && !options.allowedKeys.includes(key))) {
+		if (options.excludeKeys.includes(key) || (options.allowKeys !== undefined && !options.allowKeys.includes(key))) {
 			continue;
 		}
 		if (!options.keysFilter(key, baseValue, mixedValue)) {
