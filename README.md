@@ -1,17 +1,56 @@
-# mazeru
-
-![License](https://badgen.net/github/license/cheap-glitch/mazeru?color=green)
-![Latest release](https://badgen.net/github/release/cheap-glitch/mazeru?color=green)
-[![Coverage status](https://coveralls.io/repos/github/cheap-glitch/mazeru/badge.svg?branch=main)](https://coveralls.io/github/cheap-glitch/mazeru?branch=main)
+<div align="center">
+	<img alt="Mazeru" src"/docs/banner.png">
+	<img alt="License" src="https://badgen.net/github/license/cheap-glitch/mazeru?color=green">
+	<img alt="Latest release" src="https://badgen.net/github/release/cheap-glitch/mazeru?color=green">
+	<a href="https://coveralls.io/github/cheap-glitch/mazeru?branch=main"><img alt="Coverage status" src="https://coveralls.io/repos/github/cheap-glitch/mazeru/badge.svg?branch=main"></a>
+</div>
 
 ```typescript
+import { merge } from 'mazeru';
+
+merge({
+	foo: true,
+	bar: {
+		a: 'foo',
+		c: [0, 1]
+	}
+}, {
+	bar: {
+		a: 'bar',
+		b: false,
+		c: [2, 3, 4, 5],
+	}
+}, {
+	arrays: 'append',
+	excludeKeys: ['b'],
+});
+// {
+// 	foo: true,
+// 	bar: {
+// 		a: 'bar',
+// 		c: [0, 1, 2, 3, 4, 5]
+// 	}
+// }
 ```
+
+**mazeru** ([混ぜる](https://jisho.org/word/%E6%B7%B7%E3%81%9C%E3%82%8B))
+is a deep merging utility module aimed at JSON-compatible arrays and objects.
+
+## Features
+
+ * merge complex nested objects
+ * allow/exclude/filter keys
+ * several merge strategies for arrays (replace, append, etc.)
+ * doesn't break on cyclic references
+ * written in TypeScript and well-tested
 
 ## Installation
 
 ```shell
 npm i mazeru
 ```
+
+## API
 
 ## License
 
