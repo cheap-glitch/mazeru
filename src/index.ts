@@ -49,7 +49,7 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 	const options: MergeOptions = {
 		arrays:         MergingStrategy.Replace,
 		onlyCommonKeys: false,
-		excludeKeys:   [],
+		excludeKeys:    [],
 		keysFilter:     () => true,
 		...userOptions,
 	};

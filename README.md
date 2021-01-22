@@ -8,7 +8,7 @@
 </p>
 
 **mazeru** ([混ぜる](https://jisho.org/word/%E6%B7%B7%E3%81%9C%E3%82%8B))
-is a deep merging utility module aimed at JSON-compatible arrays and objects.
+is a deep merging utility module, aimed at JSON-compatible arrays and objects.
 
 ```typescript
 import { merge } from 'mazeru';
@@ -23,15 +23,14 @@ merge({
 	arrays: 'append',
 	excludeKeys: ['baz', 'c'],
 });
-// {
+
 // 	foo: true,
 // 	bar: { a: 'bar', b: [0, 1, 2, 3, 4, 5] },
-// }
 ```
 
 ## Features
 
- * Merge complex nested objects
+ * Merge complex nested objects & arrays
  * Allow/exclude/filter keys
  * Several merge strategies for arrays (replace, append, etc.)
  * Doesn't break on cyclic references
@@ -44,6 +43,52 @@ npm i mazeru
 ```
 
 ## API
+
+### `merge(base: JsonValue, mixed: JsonValue, options?: MergeOptions): JsonValue`
+
+Merge `mixed` into `base`.  If at least one of the passed  value is a primitive,
+the return value  will simply be `mixed`.  If both are arrays,  the return value
+will depend on the `arrays` option (see  below for more infos). Finally, if both
+are objects, they will be merge recursively.  In the case of as conflict between
+two keys at the  same level with the same name, the value  of the key in `mixed`
+will always prevail.
+
+### Options
+
+#### `arrays: 'replace' | 'append' | 'concat' | 'merge'`
+
+Default: `'replace'`
+
+The strategy used to handle two conflicting arrays:
+ * `'replace'` (default): simply replace the first array with the second one
+ * `'append'`, `'concat'`: append the second array to the first one
+ * `'merge'`: merge each pair of matching  items, adding any excess items at the
+   end (this is mostly useful when the items are objects or arrays)
+
+#### `onlyCommonKeys: boolean`
+
+Default: `true`
+
+Only keep the keys that present in  both objects. This applies to nested objects
+as well.
+
+#### `excludeKeys: string[]`
+
+Default: `[]`
+
+Exclude the listed keys from the resulting merged object.
+
+#### `allowKeys: string[]`
+
+Default: `undefined`
+
+Only allow the listed keys in the resulting merged object.
+
+#### `keysFilter: (key: string, baseValue?: JsonValue, mixedValue?: JsonValue) => boolean`
+
+Default: `() => true`
+
+Filter keys in the resulting merged object using the provided sieve.
 
 ## License
 
