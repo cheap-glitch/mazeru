@@ -38,6 +38,7 @@ test('merging arrays', () => { // {{{
 	expect(merge([{ foo: 'bar' }], [{ bar: 'foo' }], { arrays: MergingStrategy.MergeItems })).toEqual([{ foo: 'bar', bar: 'foo' }]);
 	expect(merge([0],              [{ bar: 'foo' }], { arrays: MergingStrategy.MergeItems })).toEqual([{ bar: 'foo' }]);
 	expect(merge([{ foo: 'bar' }], [0],              { arrays: MergingStrategy.MergeItems })).toEqual([0]);
+	expect(merge([{ foo: 'bar' }], [0, 'foo'],       { arrays: MergingStrategy.MergeItems })).toEqual([0, 'foo']);
 
 }); // }}}
 

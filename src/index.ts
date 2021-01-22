@@ -77,6 +77,7 @@ export function merge<B extends JsonValue, M extends JsonValue>(base: B, mixed: 
 						result.push(baseItem);
 						continue;
 					}
+					/* istanbul ignore next */
 					if (mixedItem !== undefined) {
 						result.push(mixedItem);
 					}
