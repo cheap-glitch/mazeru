@@ -13,7 +13,11 @@
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
   "homepage": "https://github.com/cheap-glitch/mazeru#readme",
   "type": "module",
-  "main": "./build/index.min.js",
+  "main": "build/index.min.js",
+  "files": [
+    "build/*.js",
+    "src/**"
+  ],
   "directories": {
     "test": "test"
   },
