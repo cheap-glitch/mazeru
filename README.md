@@ -46,12 +46,17 @@ npm i mazeru
 
 ### `merge(base: JsonValue, mixed: JsonValue, options?: MergeOptions): JsonValue`
 
-Merge `mixed` into `base`.  If at least one of the passed  value is a primitive,
-the return value  will simply be `mixed`.  If both are arrays,  the return value
-will depend on the `arrays` option (see  below for more infos). Finally, if both
-are objects, they will be merge recursively.  In the case of as conflict between
-two keys at the  same level with the same name, the value  of the key in `mixed`
-will always prevail.
+Merge `mixed` into `base`.
+
+If at least one of the passed value is a primitive, the return value will simply
+be `mixed`.
+
+If both  are arrays, the  return value will depend  on the `arrays`  option (see
+below for more infos).
+
+Finally, if both are objects, they will be merged recursively. In the case of as
+conflict between two keys at the same level with the same name, the value of the
+key in `mixed` will always prevail.
 
 ### Options
 
@@ -63,11 +68,12 @@ The strategy used to handle two conflicting arrays:
  * `'replace'` (default): simply replace the first array with the second one
  * `'append'`, `'concat'`: append the second array to the first one
  * `'merge'`: merge each pair of matching  items, adding any excess items at the
-   end (this is mostly useful when the items are objects or arrays)
+ end  (this  is  only  really  useful  when the  items  are  arrays  or  objects
+ themselves)
 
 #### `onlyCommonKeys: boolean`
 
-Default: `true`
+Default: `false`
 
 Only keep the keys that present in  both objects. This applies to nested objects
 as well.
@@ -89,6 +95,11 @@ Only allow the listed keys in the resulting merged object.
 Default: `() => true`
 
 Filter keys in the resulting merged object using the provided sieve.
+
+## Acknowledgments
+
+This module makes use of some types from the great
+[`type-fest`](https://github.com/sindresorhus/type-fest) package.
 
 ## License
 
