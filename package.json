@@ -1,6 +1,6 @@
 {
   "name": "mazeru",
-  "description": "A flexible deep merging utility for JSON objects.",
+  "description": "A flexible deep merging utility for JSON-like objects.",
   "version": "0.1.0",
   "license": "ISC",
   "repository": {
@@ -21,7 +21,7 @@
     "build": "npm run build:ts && npm run build:minify",
     "build:minify": "terser --compress --mangle toplevel --comments '/^!/' --output build/index.min.js -- build/index.js",
     "build:ts": "tsc",
-    "coverage:collect": "jest --collectCoverage",
+    "coverage": "jest --collectCoverage",
     "coverage:upload": "coveralls < .coverage/lcov.info",
     "lint": "eslint . --ext .ts --ignore-path .gitignore",
     "prepublishOnly": "npm run build",
@@ -42,6 +42,7 @@
   },
   "jest": {
     "preset": "ts-jest",
+    "testEnvironment": "node",
     "coverageDirectory": ".coverage"
   },
   "devDependencies": {
