@@ -10,8 +10,8 @@
 **mazeru** ([混ぜる](https://jisho.org/word/%E6%B7%B7%E3%81%9C%E3%82%8B))
 is a deep merging utility module, aimed at JSON-compatible arrays and objects.
 
-```typescript
-import { merge } from 'mazeru';
+```javascript
+const { merge } = require('mazeru');
 
 merge({
 	foo: true,
