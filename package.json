@@ -12,26 +12,24 @@
   },
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
   "homepage": "https://github.com/cheap-glitch/mazeru#readme",
-  "main": "build/index.min.js",
+  "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
     "src/**/*.ts",
-    "build/**/*.js",
-    "build/**/*.d.ts"
+    "build/src/**/*.js",
+    "build/src/**/*.d.ts"
   ],
   "directories": {
     "test": "test"
   },
   "scripts": {
     "build": "tsc",
-    "build:clean": "rimraf build",
-    "build:minify": "terser --compress --mangle toplevel --comments '/^!/' --output build/index.min.js -- build/index.js",
-    "build:prod": "npm run build && npm run build:minify",
     "build:watch": "tsc --watch",
     "coverage": "jest --collectCoverage",
     "coverage:upload": "coveralls < .coverage/lcov.info",
     "lint": "eslint . --ext .ts --ignore-path .gitignore",
-    "prepublishOnly": "npm run build:clean && npm run build:prod",
+    "prepublishOnly": "npm run test && npm run rebuild",
+    "rebuild": "rimraf build && npm run build",
     "test": "jest",
     "test:watch": "jest --watch"
   },
