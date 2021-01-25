@@ -1,7 +1,7 @@
 {
   "name": "mazeru",
   "description": "A flexible deep merging utility for JSON-like objects.",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "license": "ISC",
   "repository": {
     "type": "git",
