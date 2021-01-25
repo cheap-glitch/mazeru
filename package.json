@@ -24,12 +24,12 @@
   },
   "scripts": {
     "build": "tsc",
+    "build:clean": "rimraf build && npm run build",
     "build:watch": "tsc --watch",
     "coverage": "jest --collectCoverage",
     "coverage:upload": "coveralls < .coverage/lcov.info",
     "lint": "eslint . --ext .ts --ignore-path .gitignore",
-    "prepublishOnly": "npm run test && npm run rebuild",
-    "rebuild": "rimraf build && npm run build",
+    "prepublishOnly": "npm run test && npm run build:clean",
     "test": "jest",
     "test:watch": "jest --watch"
   },
