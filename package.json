@@ -16,8 +16,8 @@
   "types": "build/index.d.ts",
   "files": [
     "src/**/*.ts",
-    "build/src/**/*.js",
-    "build/src/**/*.d.ts"
+    "build/**/*.js",
+    "build/**/*.d.ts*"
   ],
   "directories": {
     "test": "test"
