@@ -11,7 +11,7 @@
 is a deep merging utility module, aimed at JSON-compatible arrays and objects.
 
 ```javascript
-const { merge } = require('mazeru');
+const merge = require('mazeru');
 
 merge({
 	foo: true,

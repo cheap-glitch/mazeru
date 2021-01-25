@@ -1,6 +1,7 @@
 import { JsonValue, JsonObject } from 'type-fest';
 
-import { MergingStrategy, merge } from '../src/index';
+import merge from '../src/index';
+import { MergingStrategy } from '../src/index';
 
 test('merging primitives', () => { // {{{
 
