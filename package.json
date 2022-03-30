@@ -1,19 +1,28 @@
 {
   "name": "mazeru",
-  "description": "A flexible deep merging utility for JSON-like objects.",
   "version": "2.0.0",
+  "description": "A flexible deep merging utility for JSON-like objects.",
   "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cheap-glitch/mazeru.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cheap-glitch/mazeru/issues"
-  },
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
+  "repository": "cheap-glitch/mazeru",
   "homepage": "https://github.com/cheap-glitch/mazeru#readme",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "bugs": "https://github.com/cheap-glitch/mazeru/issues",
+  "funding": "https://github.com/sponsors/cheap-glitch",
+  "keywords": [
+    "arrays",
+    "config",
+    "deep",
+    "json",
+    "merge",
+    "merging",
+    "mixins",
+    "objects",
+    "flexible",
+    "properties",
+    "spread"
+  ],
   "files": [
     "build"
   ],
