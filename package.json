@@ -6,8 +6,6 @@
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
   "repository": "cheap-glitch/mazeru",
   "homepage": "https://github.com/cheap-glitch/mazeru#readme",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
   "bugs": "https://github.com/cheap-glitch/mazeru/issues",
   "funding": "https://github.com/sponsors/cheap-glitch",
   "keywords": [
@@ -23,22 +21,23 @@
     "properties",
     "spread"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "build"
+    "dist"
   ],
   "directories": {
     "test": "test"
   },
   "scripts": {
     "build": "tsc",
-    "build:clean": "rimraf build && npm run build",
+    "build:clean": "empty-dir dist && npm run build",
     "build:watch": "tsc --watch",
-    "coverage": "jest --collectCoverage",
+    "coverage": "npm test -- --collectCoverage",
     "coverage:upload": "coveralls < .coverage/lcov.info",
     "lint": "eslint . --ext .ts --ignore-path .gitignore",
-    "prepublishOnly": "npm run test && npm run build:clean",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --runInBand",
+    "test:watch": "npm test -- --watch"
   },
   "eslintConfig": {
     "root": true,
@@ -49,7 +48,7 @@
     "overrides": [
       {
         "files": [
-          "./test/index.test.ts"
+          "test/index.test.ts"
         ],
         "rules": {
           "unicorn/no-null": "off"
