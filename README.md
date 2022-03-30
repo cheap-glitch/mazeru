@@ -1,11 +1,8 @@
-<h1 align="center">
-	<img alt="Mazeru" src="/docs/banner.png">
-</h1>
-<p align="center">
-	<img alt="License" src="https://badgen.net/github/license/cheap-glitch/mazeru?color=green">
-	<img alt="Latest release" src="https://badgen.net/github/release/cheap-glitch/mazeru?color=green">
-	<a href="https://coveralls.io/github/cheap-glitch/mazeru?branch=main"><img alt="Coverage status" src="https://coveralls.io/repos/github/cheap-glitch/mazeru/badge.svg?branch=main"></a>
-</p>
+![Mazeru, written in Japanase characters filled with blue and red swirls of paint.](docs/logo-small.png)
+
+[![License](https://shields.io/github/license/cheap-glitch/mazeru)](LICENSE)
+[![Latest release](https://shields.io/github/v/release/cheap-glitch/mazeru?sort=semver&label=latest%20release&color=green)](https://github.com/cheap-glitch/mazeru/releases/latest)
+[![Coverage status](https://shields.io/coveralls/github/cheap-glitch/mazeru)](https://coveralls.io/github/cheap-glitch/mazeru)
 
 **mazeru** ([混ぜる](https://jisho.org/word/%E6%B7%B7%E3%81%9C%E3%82%8B))
 is a deep merging utility module, aimed at JSON-compatible arrays and objects.
